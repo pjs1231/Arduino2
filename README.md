@@ -1,43 +1,29 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+1. 하드웨어 구성
 
-const char* ssid = "Your_SSID"; // Wi-Fi 네트워크 이름
-const char* password = "Your_Password"; // Wi-Fi 비밀번호
+먼저, 아래와 같은 하드웨어를 구성합니다.
 
-ESP8266WebServer server(80);
+아두이노 보드: 아두이노 UNO 또는 ESP8266, ESP32와 같은 보드를 사용합니다.
+릴레이 모듈: 전등을 켜고 끄기 위한 릴레이 모듈을 연결합니다.
+Wi-Fi 모듈: Wi-Fi 연결을 제공하는 모듈을 사용합니다.
+전등 및 전원 공급 장치: 전등을 연결하고 전원을 제공합니다.
+2. 아두이노 프로그래밍
 
-void setup() {
-  pinMode(D1, OUTPUT); // D1 핀을 출력으로 설정 (릴레이 제어 핀)
+아두이노에 아래와 같이 아두이노 코드를 업로드합니다. 이 코드는 Wi-Fi 모듈을 통해 스마트폰과 통신하고, 릴레이를 제어합니다.
 
-  // Wi-Fi 연결
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-  Serial.println("Connected to WiFi");
+3. 스마트폰 애플리케이션
 
-  // 웹 서버 시작
-  server.on("/", HTTP_GET, handleRoot);
-  server.on("/on", HTTP_GET, handleOn);
-  server.on("/off", HTTP_GET, handleOff);
-  server.begin();
-}
+스마트폰 애플리케이션을 개발하여 아두이노와 통신하고 사용자에게 전등 제어를 제공합니다. 이를 위해 Android 또는 iOS 애플리케이션을 개발해야 합니다. 앱에서 사용자가 전등을 켜고 끌 수 있는 버튼을 추가합니다.
 
-void loop() {
-  server.handleClient();
-}
+4. 무선 통신 설정
 
-void handleRoot() {
-  server.send(200, "text/html", "Welcome to the Light Control System");
-}
+스마트폰 애플리케이션에서 Wi-Fi 모듈로 전등을 제어할 수 있도록 통신을 설정합니다. 아두이노와 스마트폰 애플리케이션 간의 통신은 HTTP GET 요청을 사용하여 전등을 켜고 끄는 기능을 활성화합니다.
 
-void handleOn() {
-  digitalWrite(D1, LOW); // 릴레이를 활성화하여 전등 켜기
-  server.send(200, "text/html", "Light is ON");
-}
+5. 웹 서버 호스팅 또는 로컬 서버
 
-void handleOff() {
-  digitalWrite(D1, HIGH); // 릴레이를 비활성화하여 전등 끄기
-  server.send(200, "text/html", "Light is OFF");
-}
+스마트폰 애플리케이션은 아두이노의 IP 주소 또는 도메인을 통해 아두이노에 연결합니다. 이를 위해 아두이노 코드에서 서버를 호스팅하거나, 외부 웹 서버를 사용하여 통신할 수 있습니다.
+
+6. 애플리케이션 테스트 및 배포
+
+스마트폰 애플리케이션을 테스트하고, 사용자에게 배포합니다. 사용자는 애플리케이션을 통해 집의 전등을 켜고 끌 수 있게 됩니다.
+
+이러한 단계를 따라 집의 전등을 스마트폰으로 제어하는 시스템을 구축할 수 있습니다. 단계마다 세부 사항과 코드는 프로젝트의 요구 사항과 하드웨어에 따라 조정될 수 있습니다.
